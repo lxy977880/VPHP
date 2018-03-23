@@ -12,7 +12,7 @@ class Encrypt
      * @param $str
      * @return string
      */
-    public static function encryptPassword($str)
+    static public function encryptPassword($str)
     {
         $str2 = "";
         $b = strrev($str);
@@ -37,7 +37,7 @@ class Encrypt
      * @param int $expiry
      * @return mixed|string
      */
-    public static function encryptData($string, $operation = 'DECODE', $key = '', $expiry = 0)
+    static public function encryptData($string, $operation = 'DECODE', $key = '', $expiry = 0)
     {
         if ($operation != "DECODE") {
             $string = serialize($string);

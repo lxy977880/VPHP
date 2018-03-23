@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 数据库操作层
  * @author lxy<lxy_works@163.com>
@@ -12,9 +13,9 @@ class DB
     // 数据库名称
     public static $dbName;
     // 读数据库连接
-    public static $linkR    = 0;
+    public static $linkR = 0;
     // 写数据库连接
-    public static $linkW    = 0;
+    public static $linkW = 0;
     // 查询结果(读)
     public static $queryIdR = 0;
     // 查询结果(写)
@@ -30,20 +31,20 @@ class DB
     /**
      * 数据库声明
      */
-    public static function _connectR()
+    static public function _connectR()
     {
         // 不存到读库连接就读取配置文件中的信息
         if (empty(self::$dbRead)) {
             self::$dbRead = C("server")['DBREAD'];
         }
-        
+
         // 判断是否有链接属性
         if (0 == self::$linkR) {
             if (!is_array(self::$dbRead) || empty(self::$dbRead)) {
                 Href::_404();
             }
             self::$linkR = @mysql_connect(self::$dbRead['HOST'] . ":" . self::$dbRead['PORT'], self::$dbRead['USER'], self::$dbRead['PASSWORD']);
-            
+
             @mysql_query("set names utf8", self::$linkR);
 
             if (!@mysql_select_db(self::$dbRead['DATABASENAME'], self::$linkR)) {
@@ -55,24 +56,24 @@ class DB
     /**
      * 写库链接方法
      */
-    public static function _connectW()
+    static public function _connectW()
     {
         if (empty(self::$dbWrite)) {
             self::$dbWrite = C("server")['DBWRITE'];
         }
-        
+
         if (0 == self::$linkW) {
 
             if (!is_array(self::$dbWrite) || empty(self::$dbWrite)) {
                 Href::_404();
             }
-            
+
             self::$linkW = @mysql_connect(self::$dbWrite['HOST'] . ":" . self::$dbWrite['PORT'], self::$dbWrite['USER'], self::$dbWrite['PASSWORD']);
             @mysql_query("set names utf8", self::$linkW);
             if (!self::$linkW) {
                 self::halt("连接数据库(写)服务端失败!");
             }
-            
+
             if (!@mysql_select_db(self::$dbWrite['DATABASENAME'], self::$linkW)) {
                 self::halt("不能打开指定的数据库(写):" . self::$dbWrite['DATABASENAME']);
             }
@@ -81,7 +82,7 @@ class DB
     }
 
     // 查询执行操作
-    public static function select($queryString, $sign = "")
+    static public function select($queryString, $sign = "")
     {
         if (0 == self::$linkR) {
             self::_connectR();
@@ -92,7 +93,7 @@ class DB
         }
         // sql执行操作
         self::$queryIdR = @mysql_query($queryString, self::$linkR);
-       
+
         // 判断是否执行成功
         if (!self::$queryIdR) {
             self::halt("SQL查询语句出错: " . $queryString);
@@ -148,7 +149,7 @@ class DB
     /**
      * 执行SQL
      */
-    public static function query($queryString, $sign = "")
+    static public function query($queryString, $sign = "")
     {
         // 检测关键词，判断当前执行的是读操作还是写操作
         if (substr(trim($queryString), 0, 6) == "select") {
@@ -163,9 +164,9 @@ class DB
             if (0 == self::$linkW) {
                 self::_connectW();
             }
-            
+
             self::$queryIdW = @mysql_query($queryString, self::$linkW);
-            
+
             if (!self::$queryIdW) {
                 return false;
             }
@@ -177,7 +178,7 @@ class DB
     /**
      * 执行查询(读) 返回资源类型数据
      */
-    public static function getResourceData($queryString, $sign = "")
+    static public function getResourceData($queryString, $sign = "")
     {
         if (0 == self::$linkR) {
             self::_connectR();
@@ -197,7 +198,7 @@ class DB
     /**
      * 执行SQL语句并返回由查询结果中第一行记录组成的数组
      */
-    public static function getOneValue($sql, $field = "")
+    static public function getOneValue($sql, $field = "")
     {
         $result = self::getResourceData($sql);
         // 判断是否需要获取指定字段的值
@@ -224,7 +225,7 @@ class DB
     /**
      *  获取指定字段的值以数组当时返回
      */
-    public static function getField2Array($sql, $field = "")
+    static public function getField2Array($sql, $field = "")
     {
         if (empty($field)) {
             return self::select($sql);
@@ -232,7 +233,7 @@ class DB
 
         $result = self::getResourceData($sql);
 
-        $array  = array();
+        $array = array();
 
         while ($resultRow = mysql_fetch_assoc($result)) {
             $array[] = $resultRow[$field];
@@ -244,13 +245,13 @@ class DB
     /**
      * 获取上一步插入的id
      */
-    static function getInsertId()
+    static public function getInsertId()
     {
         return @mysql_insert_id(self::$linkIdW);
     }
 
     #返回结果集中记录行数
-    static function getNumRows()
+    static public function getNumRows()
     {
         self::$rows = mysql_num_rows(self::$linkR);
 
@@ -258,7 +259,7 @@ class DB
     }
 
     #返回影响记录数
-    static function getAffectedRows()
+    static public function getAffectedRows()
     {
         self::$affectedRows = mysql_affected_rows(self::$queryIdR);
 
@@ -268,7 +269,7 @@ class DB
     /**
      * 打印出错误信息
      */
-    static function halt($msg)
+    static public function halt($msg)
     {
         self::$error = mysql_error();
 

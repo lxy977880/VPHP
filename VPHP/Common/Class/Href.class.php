@@ -12,7 +12,7 @@ class Href
      * url跳转
      * @param $url
      */
-    public static function URL($url)
+    static public function URL($url)
     {
         Header("Location:" . $url);
         exit;
@@ -21,7 +21,7 @@ class Href
     /**
      * 404跳转方法
      */
-    public static function _404()
+    static public function _404()
     {
 
         Header("HTTP/1.1 404 not found");
@@ -34,7 +34,7 @@ class Href
      * @param $url
      * 301跳转
      */
-    public static function _301($url)
+    static public function _301($url)
     {
         Header("HTTP/1.1 301 Moved Permanently");
         self::URL($url);

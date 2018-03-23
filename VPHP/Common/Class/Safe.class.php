@@ -13,7 +13,7 @@ class Safe
      * @param $string
      * @return array|string
      */
-    public static function rDaddslashes($string)
+    static public function rDaddslashes($string)
     {
         if (is_array($string)) {
             foreach ($string as $key => $val) {

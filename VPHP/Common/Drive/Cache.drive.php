@@ -8,7 +8,7 @@ class Cache
 {
     static $aliyOCS;
 
-    static function _connect()
+    static public function _connect()
     {
         if (empty(self::$aliyOCS)) {
             $OCS_HOST = unserialize(OCS_HOST);
@@ -26,7 +26,7 @@ class Cache
      * @param String $val 元素的值
      * @param Intval $time 存储元素的时间
      */
-    static function set($key, $val = "", $time = 3600)
+    static public function set($key, $val = "", $time = 3600)
     {
         self::_connect();
 
@@ -39,7 +39,7 @@ class Cache
      * 获取元素
      * @param  String $key 元素的键
      */
-    static function get($key)
+    static public function get($key)
     {
         self::_connect();
 

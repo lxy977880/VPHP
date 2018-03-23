@@ -404,7 +404,7 @@ class Translate
         array("zuo", -10254)
     );
 
-    static function transform($num)
+    static public function transform($num)
     {
 
         if ($num > 0 && $num < 160) {
@@ -421,7 +421,7 @@ class Translate
         }
     }
 
-    static function zh2pinyin($string)
+    static public function zh2pinyin($string)
     {
         $output = "";
         for ($i = 0; $i < strlen($string); $i++) {

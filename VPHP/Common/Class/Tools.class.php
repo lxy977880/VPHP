@@ -13,7 +13,7 @@ Class Tools
      * @param $ip
      * @return array
      */
-    public static function getIpAddress($ip)
+    static public function getIpAddress($ip)
     {
         $ip = preg_replace("/\s/", "", preg_replace("/\r\n/", "", $ip));
 
@@ -37,7 +37,7 @@ Class Tools
      * @return string
      * unicode编码转化为中文,转化失败返回原字符串
      */
-    public static function ucode2zh($code)
+    static public function ucode2zh($code)
     {
         $temp = explode('\u', $code);
         $rslt = array();
@@ -56,7 +56,7 @@ Class Tools
      * 获取当前客户端的ip地址
      * @return array|false|int|string
      */
-    public static function getIP()
+    static public function getIP()
     {
         if (getenv("HTTP_CLIENT_IP")) {
             $ip = getenv("HTTP_CLIENT_IP");
@@ -78,7 +78,7 @@ Class Tools
      * @param $key
      * @return array
      */
-    public static function getArrayByKey($arr, $key)
+    static public function getArrayByKey($arr, $key)
     {
         $tmp_arr = array();
         foreach ($arr as $k => $v) {
@@ -95,7 +95,7 @@ Class Tools
      * 判断当前是PC端还是移动端
      * @return bool
      */
-    public static function isPhone()
+    static public function isPhone()
     {
         if (get('sign') == 'PC') {
             setcookie('ooopic_sign', get('sign'), time() + 3600, '/', ".ooopic.com");
